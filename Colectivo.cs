@@ -3,8 +3,12 @@ namespace Space
 {
     public class Colectivo
     {
-        public int tarifa = 940;
+
+        public int tarifa;
+        public int precio = 940;
         public string linea; 
+        public string TipoTarjeta;
+
 
         public Colectivo(string linea1)
         {
@@ -13,6 +17,27 @@ namespace Space
 
         public bool Descontar(Tarjeta tarjeta)
         {
+
+            if (tarjeta is GratuitoBoleto)
+            {
+                tarifa = 0;
+                TipoTarjeta = "Boleto Gratuito";
+            }
+            else
+            {
+
+                if (tarjeta is MedioBoleto)
+                {
+                    tarifa = precio / 2;
+                    TipoTarjeta = "Medio Boleto";
+                }
+                else
+                {
+                    tarifa = precio;
+                    TipoTarjeta = "Medio Boleto";
+                }
+            }
+
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
                 tarjeta.saldo -= tarifa;
@@ -29,8 +54,10 @@ namespace Space
     {
         if (Descontar(tarjeta))
         {
-            tarjeta.historial[tarjeta.historial.Length] = new Boleto(tarifa, linea, tarjeta.saldo);
-            return new Boleto(tarifa, linea, tarjeta.saldo);
+
+            tarjeta.historial[tarjeta.historial.Length] = new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
+            return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
+
         }
         else
         {
