@@ -4,15 +4,17 @@ namespace Space
 {
     public class Boleto
     {
-        private int tarifa;
-        private string linea;
-        private int saldoRestante;
+        public int tarifa;
+        public string linea;
+        public int saldoRestante;
+        public string tipoTarjeta;
 
-        public Boleto(int precio, string linea1, int saldoRestante)
+        public Boleto(int tarifa1, string linea1, int saldoRestante1, string tipoTarjeta1)
         {
-            this.tarifa = precio;
+            this.tarifa = tarifa1;
             this.linea = linea1;
-            this.saldoRestante = saldoRestante;
+            this.saldoRestante = saldoRestante1;
+            this.tipoTarjeta = tipoTarjeta1;
         }
     }
 }
