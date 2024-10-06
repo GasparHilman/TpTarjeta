@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace Space
 {
     public class Colectivo
@@ -25,16 +27,47 @@ namespace Space
             }
             else
             {
-
                 if (tarjeta is MedioBoleto)
-                {
-                    tarifa = precio / 2;
+                {   
+                    if(tarjeta.historial.Count != 0){
+                    if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != DateTime.Now.Day)
+                    {
+
+                        tarjeta.viajesHoy = 0;
+                        tarifa = precio / 2;
+                    }
+                    }
+                    
+                    if (tarjeta.viajesHoy < 4 && tarjeta.viajesHoy > 0)
+                    {
+
+                        if ((tarjeta.historial.LastOrDefault().UltimoViaje.Minute - DateTime.Now.Minute) > 5)
+                        {
+                            tarifa = precio / 2;
+
+                        }
+                        else
+                        {
+
+                            tarifa = precio;
+                        }
+
+                    }
+                    else
+                    {
+
+                        tarifa = precio;
+                    }
+                    if(tarjeta.historial.Count == 0){
+                        tarifa = precio / 2;
+                    }
+
                     TipoTarjeta = "Medio Boleto";
                 }
                 else
                 {
                     tarifa = precio;
-                    TipoTarjeta = "Medio Boleto";
+                    TipoTarjeta = "Boleto Normal";
                 }
             }
 
@@ -50,20 +83,18 @@ namespace Space
             }
         }
 
-    public Boleto PagarCon(Tarjeta tarjeta)
-    {
-        if (Descontar(tarjeta))
+        public Boleto PagarCon(Tarjeta tarjeta)
         {
-
-            tarjeta.historial[tarjeta.historial.Length] = new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
-            return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
-
+            if (Descontar(tarjeta))
+            {
+                tarjeta.historial.Add(new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id));
+                return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id);
+            }
+            else
+            {
+                Console.WriteLine("No se pudo emitir el boleto.");
+                return null;
+            }
         }
-        else
-        {
-            Console.WriteLine("No se pudo emitir el boleto.");
-            return null;
-        }
-    }
 }
 }
