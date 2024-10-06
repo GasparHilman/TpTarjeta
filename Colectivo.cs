@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Space
 {
     public class Colectivo
@@ -19,8 +22,26 @@ namespace Space
         {
 
             if (tarjeta is GratuitoBoleto)
-            {
-                tarifa = 0;
+            {   
+                if(tarjeta.historial.Count != 0){
+                    if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != DateTime.Now.Day)
+                    {
+
+                        tarjeta.viajesHoy = 0;
+                    }
+                }
+                if (tarjeta.viajesHoy < 2)
+                {
+
+                    tarifa = 0;
+
+                }
+                else
+                {
+
+                    tarifa = precio;
+                }
+
                 TipoTarjeta = "Boleto Gratuito";
             }
             else
@@ -50,20 +71,18 @@ namespace Space
             }
         }
 
-    public Boleto PagarCon(Tarjeta tarjeta)
-    {
-        if (Descontar(tarjeta))
+        public Boleto PagarCon(Tarjeta tarjeta)
         {
-
-            tarjeta.historial[tarjeta.historial.Length] = new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
-            return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta);
-
+            if (Descontar(tarjeta))
+            {
+                tarjeta.historial.Add(new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id));
+                return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id);
+            }
+            else
+            {
+                Console.WriteLine("No se pudo emitir el boleto.");
+                return null;
+            }
         }
-        else
-        {
-            Console.WriteLine("No se pudo emitir el boleto.");
-            return null;
-        }
-    }
 }
 }
