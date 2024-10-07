@@ -46,16 +46,47 @@ namespace Space
             }
             else
             {
-
                 if (tarjeta is MedioBoleto)
-                {
-                    tarifa = precio / 2;
+                {   
+                    if(tarjeta.historial.Count != 0){
+                    if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != DateTime.Now.Day)
+                    {
+
+                        tarjeta.viajesHoy = 0;
+                        tarifa = precio / 2;
+                    }
+                    }
+                    
+                    if (tarjeta.viajesHoy < 4 && tarjeta.viajesHoy > 0)
+                    {
+
+                        if ((tarjeta.historial.LastOrDefault().UltimoViaje.Minute - DateTime.Now.Minute) > 5)
+                        {
+                            tarifa = precio / 2;
+
+                        }
+                        else
+                        {
+
+                            tarifa = precio;
+                        }
+
+                    }
+                    else
+                    {
+
+                        tarifa = precio;
+                    }
+                    if(tarjeta.historial.Count == 0){
+                        tarifa = precio / 2;
+                    }
+
                     TipoTarjeta = "Medio Boleto";
                 }
                 else
                 {
                     tarifa = precio;
-                    TipoTarjeta = "Medio Boleto";
+                    TipoTarjeta = "Boleto Normal";
                 }
             }
 
