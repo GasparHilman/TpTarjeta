@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Space
 {
     public class Colectivo
@@ -21,8 +22,26 @@ namespace Space
         {
 
             if (tarjeta is GratuitoBoleto)
-            {
-                tarifa = 0;
+            {   
+                if(tarjeta.historial.Count != 0){
+                    if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != DateTime.Now.Day)
+                    {
+
+                        tarjeta.viajesHoy = 0;
+                    }
+                }
+                if (tarjeta.viajesHoy < 2)
+                {
+
+                    tarifa = 0;
+
+                }
+                else
+                {
+
+                    tarifa = precio;
+                }
+
                 TipoTarjeta = "Boleto Gratuito";
             }
             else
@@ -73,7 +92,28 @@ namespace Space
 
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
-                tarjeta.saldo -= tarifa;
+                if (tarjeta.credito == 0)
+                {
+
+                    tarjeta.saldo -= tarifa;
+                    tarjeta.viajesHoy++;
+
+                }
+                else
+                {
+
+                    if (tarjeta.credito >= tarifa)
+                    {
+                        tarjeta.credito -= tarifa;
+
+                    }
+                    else
+                    {
+                        tarjeta.saldo -= tarifa - tarjeta.credito;
+                        tarjeta.credito = 0;
+                    }
+                }
+
                 return true;
             }
             else
