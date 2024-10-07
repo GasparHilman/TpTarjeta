@@ -61,7 +61,28 @@ namespace Space
 
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
-                tarjeta.saldo -= tarifa;
+                if (tarjeta.credito == 0)
+                {
+
+                    tarjeta.saldo -= tarifa;
+                    tarjeta.viajesHoy++;
+
+                }
+                else
+                {
+
+                    if (tarjeta.credito >= tarifa)
+                    {
+                        tarjeta.credito -= tarifa;
+
+                    }
+                    else
+                    {
+                        tarjeta.saldo -= tarifa - tarjeta.credito;
+                        tarjeta.credito = 0;
+                    }
+                }
+
                 return true;
             }
             else
