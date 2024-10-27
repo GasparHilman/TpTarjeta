@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Space
@@ -8,7 +8,7 @@ namespace Space
 
         public int saldo;
         public int id;
-        private int saldo_max = 36000;
+        public int saldo_max = 36000;
         public int limite_neg = -480;
         private int[] montos_posibles = new int[] { 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
         public List<Boleto> historial = new List<Boleto>();
