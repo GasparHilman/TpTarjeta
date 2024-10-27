@@ -100,11 +100,11 @@ namespace Space
 
                     }
                     tarifa = precio;
-                    if (tarjeta.viajesmes >= 30 && tarjeta.viajesmes <= 79)
+                    if (tarjeta.viajesmes >= 29 && tarjeta.viajesmes <= 78)
                     {
                         tarifa = (int)(precio * 0.8);
                     }
-                    if (tarjeta.viajesmes ==80)
+                    if (tarjeta.viajesmes ==79)
                     {
                         tarifa = (int)(precio * 0.75);
                     }
