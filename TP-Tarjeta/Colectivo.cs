@@ -21,55 +21,20 @@ namespace Space
         {
             if (tarjeta is GratuitoBoleto)
             {
-                if (tarjeta.historial.Count != 0)
-                {
-                    if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
-                    {
-                        tarjeta.viajesHoy = 0;
-                    }
-                }
-                if (tarjeta.viajesHoy < 2)
-                {
-
-                    tarifa = 0;
-
-                }
-                else
-                {
-
-                    tarifa = precio;
-                }
-
-                TipoTarjeta = "Boleto Gratuito";
-            }
-            else
-            {
-
-                if (tarjeta is MedioBoleto)
+                tarifa = precio;
+                if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
                 {
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
                         {
-                            
                             tarjeta.viajesHoy = 0;
-                            tarifa = precio / 2;
                         }
                     }
-
-                    if (tarjeta.viajesHoy < 4 && tarjeta.viajesHoy > 0)
+                    if (tarjeta.viajesHoy < 2)
                     {
 
-                        if (tarjeta.historial.LastOrDefault().UltimoViaje.Hour == tiempo.Now().Hour ? (tiempo.Now().Minute - tarjeta.historial.LastOrDefault().UltimoViaje.Minute ) > 5 : true)
-                        {
-                            tarifa = precio / 2;
-
-                        }
-                        else
-                        {
-
-                            tarifa = precio;
-                        }
+                        tarifa = 0;
 
                     }
                     else
@@ -77,12 +42,55 @@ namespace Space
 
                         tarifa = precio;
                     }
-                    if (tarjeta.historial.Count == 0)
-                    {
-                        tarifa = precio / 2;
-                    }
 
-                    TipoTarjeta = "Medio Boleto";
+                    TipoTarjeta = "Boleto Gratuito"; 
+
+                }
+            }
+            else
+            {
+                tarifa = precio;
+                if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
+                {
+                    if (tarjeta is MedioBoleto)
+                    {
+                        if (tarjeta.historial.Count != 0)
+                        {
+                            if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
+                            {
+
+                                tarjeta.viajesHoy = 0;
+                                tarifa = precio / 2;
+                            }
+                        }
+
+                        if (tarjeta.viajesHoy < 4 && tarjeta.viajesHoy > 0)
+                        {
+
+                            if (tarjeta.historial.LastOrDefault().UltimoViaje.Hour == tiempo.Now().Hour ? (tiempo.Now().Minute - tarjeta.historial.LastOrDefault().UltimoViaje.Minute) > 5 : true)
+                            {
+                                tarifa = precio / 2;
+
+                            }
+                            else
+                            {
+
+                                tarifa = precio;
+                            }
+
+                        }
+                        else
+                        {
+
+                            tarifa = precio;
+                        }
+                        if (tarjeta.historial.Count == 0)
+                        {
+                            tarifa = precio / 2;
+                        }
+
+                        TipoTarjeta = "Medio Boleto";
+                    }
                 }
                 else
                 {      
