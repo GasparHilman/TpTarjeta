@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TP_Tarjeta
+namespace Space
 {
-    internal class Colevtivo_Interurbano
+    public class ColectivoInterurbano : Colectivo
     {
+        public ColectivoInterurbano(string linea1) : base(linea1)
+        {
+            precio = 2500;
+        }
     }
 }
