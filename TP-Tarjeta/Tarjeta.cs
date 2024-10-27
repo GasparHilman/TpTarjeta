@@ -13,6 +13,7 @@ namespace Space
         private int[] montos_posibles = new int[] { 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
         public List<Boleto> historial = new List<Boleto>();
         public int viajesHoy;
+        public int viajesmes;
         public int credito;
 
         public void mostrarsaldo()

@@ -8,7 +8,7 @@ namespace Space
     public class Colectivo
     {
         public int tarifa;
-        public int precio = 940;
+        public int precio = 1200;
         public string linea;
         public string TipoTarjeta;
 
@@ -85,8 +85,23 @@ namespace Space
                     TipoTarjeta = "Medio Boleto";
                 }
                 else
-                {
+                {      
+                    if(tarjeta.historial.Last().UltimoViaje.Month != DateTime.Now.Month || tarjeta.historial.Last().UltimoViaje.Year != DateTime.Now.Year)
+                    {
+                        tarjeta.viajesmes = 0;
+
+                    }
                     tarifa = precio;
+                    if (tarjeta.viajesmes >= 30 && tarjeta.viajesmes <= 79)
+                    {
+                        tarifa = (int)(precio * 0.8);
+                    }
+                    if (tarjeta.viajesmes ==80)
+                    {
+                        tarifa = (int)(precio * 0.75);
+                    }
+
+
                     TipoTarjeta = "Boleto Normal";
                 }
             }
@@ -129,6 +144,7 @@ namespace Space
             if (Descontar(tarjeta, tiempo))
             {
                 tarjeta.historial.Add(new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id, tiempo));
+                tarjeta.viajesmes += 1;
                 return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id, tiempo);
             }
             else
