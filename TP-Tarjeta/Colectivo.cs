@@ -43,7 +43,8 @@ namespace Space
                         tarifa = precio;
                     }
 
-                    TipoTarjeta = "Boleto Gratuito";
+                    TipoTarjeta = "Boleto Gratuito"; 
+
                 }
             }
             else
