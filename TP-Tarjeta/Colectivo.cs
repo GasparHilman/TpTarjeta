@@ -49,10 +49,10 @@ namespace Space
             }
             else
             {
-                tarifa = precio;
-                if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
+               if (tarjeta is MedioBoleto)
                 {
-                    if (tarjeta is MedioBoleto)
+                    tarifa = precio;
+                    if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
                     {
                         if (tarjeta.historial.Count != 0)
                         {
@@ -91,10 +91,11 @@ namespace Space
 
                         TipoTarjeta = "Medio Boleto";
                     }
+                    TipoTarjeta = "Medio Boleto";
                 }
                 else
                 {      
-                    if(tarjeta.historial.Last().UltimoViaje.Month != DateTime.Now.Month || tarjeta.historial.Last().UltimoViaje.Year != DateTime.Now.Year)
+                    if(tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
                     {
                         tarjeta.viajesmes = 0;
 
