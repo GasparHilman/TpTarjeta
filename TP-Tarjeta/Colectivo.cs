@@ -22,7 +22,7 @@ namespace Space
             if (tarjeta is GratuitoBoleto)
             {
                 tarifa = precio;
-                if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
+                if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
                 {
                     if (tarjeta.historial.Count != 0)
                     {
@@ -52,7 +52,7 @@ namespace Space
                if (tarjeta is MedioBoleto)
                 {
                     tarifa = precio;
-                    if (DateTime.Now.Hour >= 6 && DateTime.Now.Hour <= 22)
+                    if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
                     {
                         if (tarjeta.historial.Count != 0)
                         {
@@ -94,11 +94,14 @@ namespace Space
                     TipoTarjeta = "Medio Boleto";
                 }
                 else
-                {      
-                    if(tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
+                {
+                    if (tarjeta.historial.Count != 0)
                     {
-                        tarjeta.viajesmes = 0;
+                        if (tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
+                        {
+                            tarjeta.viajesmes = 0;
 
+                        }
                     }
                     tarifa = precio;
                     if (tarjeta.viajesmes >= 29 && tarjeta.viajesmes <= 78)

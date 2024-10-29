@@ -30,5 +30,9 @@ namespace Space
         {
             tiempo = tiempo.AddMinutes(cantidad);
         }
+        public void AgregarHoras(int cantidad)
+        {
+            tiempo = tiempo.AddHours(cantidad);
+        }
     }
 }
