@@ -7,14 +7,16 @@ namespace Space
 {
     public class Colectivo
     {
-        public int tarifa;
-        public int precio = 1200;
+        private int flag = 0;
+        private int tarifa;
+        public int precio { get; protected set; }
         public string linea;
-        public string TipoTarjeta;
+        private string TipoTarjeta;
 
         public Colectivo(string linea1)
         {
             this.linea = linea1;
+            precio = 1200;
         }
 
         public bool Descontar(Tarjeta tarjeta, Tiempo tiempo)
@@ -22,8 +24,10 @@ namespace Space
             if (tarjeta is GratuitoBoleto)
             {
                 tarifa = precio;
+                flag = 1;
                 if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
                 {
+                    flag = 0;
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
@@ -50,10 +54,12 @@ namespace Space
             else
             {
                if (tarjeta is MedioBoleto)
-                {
+                {   
                     tarifa = precio;
+                    flag = 1;
                     if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
                     {
+                        flag = 0; 
                         if (tarjeta.historial.Count != 0)
                         {
                             if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
@@ -95,6 +101,7 @@ namespace Space
                 }
                 else
                 {
+                    flag = 0;
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
@@ -120,11 +127,15 @@ namespace Space
 
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
+
+                if (flag == 0)
+                {
+                    tarjeta.viajesHoy++;
+                }
                 if (tarjeta.credito == 0)
                 {
-
                     tarjeta.saldo -= tarifa;
-                    tarjeta.viajesHoy++;
+                    
 
                 }
                 else
@@ -133,12 +144,14 @@ namespace Space
                     if (tarjeta.credito >= tarifa)
                     {
                         tarjeta.credito -= tarifa;
+                        
 
                     }
                     else
                     {
                         tarjeta.saldo -= tarifa - tarjeta.credito;
                         tarjeta.credito = 0;
+                       
                     }
                 }
 

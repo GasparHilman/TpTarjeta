@@ -6,12 +6,12 @@ namespace Space
 {
     public class Boleto
     {
-        public int tarifa;
-        public string linea;
-        public int saldoRestante;
-        public string tipoTarjeta;
-        public DateTime UltimoViaje;
-        public int idTarjeta;
+        private int tarifa;
+        private string linea;
+        private int saldoRestante;
+        private string tipoTarjeta;
+        public DateTime UltimoViaje { get; private set; }
+        private int idTarjeta;
         
 
         public Boleto(int tarifa1, string linea1, int saldoRestante1, string tipoTarjeta1, int idTarjeta1, Tiempo tiempo)

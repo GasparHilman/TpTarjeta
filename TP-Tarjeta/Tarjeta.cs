@@ -6,15 +6,15 @@ namespace Space
     public class Tarjeta
     {
 
-        public int saldo;
-        public int id;
-        public int saldo_max = 36000;
-        public int limite_neg = -480;
+        public int saldo { get; private set; }
+        private int id;
+        public int saldo_max{ get; private set; }
+        public int limite_neg  { get; private set; }
         private int[] montos_posibles = new int[] { 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
         public List<Boleto> historial = new List<Boleto>();
-        public int viajesHoy;
-        public int viajesmes;
-        public int credito;
+        public int viajesHoy { get; private set; }
+        public int viajesmes { get; private set; }
+        public int credito { get; private set; }
 
         public void mostrarsaldo()
         {
@@ -27,7 +27,8 @@ namespace Space
             this.id = id;
             saldo = 0;
             credito = 0;
-
+            saldo_max = 36000;
+            limite_neg = -480;
         }
 
         public void Cargar_tarjeta(int monto)
