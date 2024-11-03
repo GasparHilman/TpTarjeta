@@ -7,32 +7,31 @@ namespace Space
 {
     public class Colectivo
     {
-        private int flag = 0;
         private int tarifa;
         public int precio { get; protected set; }
         public string linea;
         private string TipoTarjeta;
+        private bool flag_viajeshoy = false;
 
         public Colectivo(string linea1)
         {
-            this.linea = linea1;
+            linea = linea1;
             precio = 1200;
         }
 
         public bool Descontar(Tarjeta tarjeta, Tiempo tiempo)
         {
             if (tarjeta is GratuitoBoleto)
-            {
+            {   
                 tarifa = precio;
-                flag = 1;
+                flag_viajeshoy=false;
                 if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
-                {
-                    flag = 0;
+                {   flag_viajeshoy=true;
                     if (tarjeta.historial.Count != 0)
                     {
-                        if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
+                        if (tarjeta.historial.LastOrDefault().UltimoViaje.DayOfYear != tiempo.Now().DayOfYear)
                         {
-                            tarjeta.viajesHoy = 0;
+                            tarjeta.reiniciar_viajeshoy();
                         }
                     }
                     if (tarjeta.viajesHoy < 2)
@@ -56,16 +55,16 @@ namespace Space
                if (tarjeta is MedioBoleto)
                 {   
                     tarifa = precio;
-                    flag = 1;
-                    if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
+                    flag_viajeshoy=false;
+                    if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22 && tiempo.Now().DayOfWeek != DayOfWeek.Sunday && tiempo.Now().DayOfWeek != DayOfWeek.Saturday)
                     {
-                        flag = 0; 
+                        flag_viajeshoy=true;
                         if (tarjeta.historial.Count != 0)
                         {
-                            if (tarjeta.historial.LastOrDefault().UltimoViaje.Day != tiempo.Now().Day)
+                            if (tarjeta.historial.LastOrDefault().UltimoViaje.DayOfYear != tiempo.Now().DayOfYear)
                             {
 
-                                tarjeta.viajesHoy = 0;
+                                tarjeta.reiniciar_viajeshoy();
                                 tarifa = precio / 2;
                             }
                         }
@@ -101,12 +100,12 @@ namespace Space
                 }
                 else
                 {
-                    flag = 0;
+                    
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
                         {
-                            tarjeta.viajesmes = 0;
+                            tarjeta.setear_viajesmes(0);
 
                         }
                     }
@@ -128,29 +127,27 @@ namespace Space
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
 
-                if (flag == 0)
+                if (flag_viajeshoy)
                 {
-                    tarjeta.viajesHoy++;
+                    tarjeta.aumentar_viajeshoy();
                 }
+
                 if (tarjeta.credito == 0)
                 {
-                    tarjeta.saldo -= tarifa;
-                    
-
+                    tarjeta.restar_saldo(tarifa);
                 }
                 else
                 {
 
                     if (tarjeta.credito >= tarifa)
                     {
-                        tarjeta.credito -= tarifa;
-                        
+                        tarjeta.restar_credito(tarifa);
 
                     }
                     else
                     {
-                        tarjeta.saldo -= tarifa - tarjeta.credito;
-                        tarjeta.credito = 0;
+                        tarjeta.restar_saldo(tarifa - tarjeta.credito);
+                        tarjeta.reiniciar_credito();
                        
                     }
                 }
@@ -169,7 +166,6 @@ namespace Space
             if (Descontar(tarjeta, tiempo))
             {
                 tarjeta.historial.Add(new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id, tiempo));
-                tarjeta.viajesmes += 1;
                 return new Boleto(tarifa, linea, tarjeta.saldo, TipoTarjeta, tarjeta.id, tiempo);
             }
             else

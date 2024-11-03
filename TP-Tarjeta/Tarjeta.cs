@@ -7,7 +7,7 @@ namespace Space
     {
 
         public int saldo { get; private set; }
-        private int id;
+        public int id { get; private set; }
         public int saldo_max{ get; private set; }
         public int limite_neg  { get; private set; }
         private int[] montos_posibles = new int[] { 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000 };
@@ -64,6 +64,28 @@ namespace Space
 
                 }
             }
+        }
+
+        public void restar_saldo(int monto){
+            saldo-=monto;
+            viajesmes += 1;
+        }
+        public void restar_credito(int monto){
+            credito-=monto;
+        }
+        public void reiniciar_credito(){
+            credito = 0;
+        }
+        public void reiniciar_viajeshoy(){
+            viajesHoy = 0;
+        }
+        public void aumentar_viajeshoy()
+        {
+            viajesHoy++;
+        }
+        public void setear_viajesmes(int numero)
+        {
+            viajesmes=numero;
         }
     }
 }

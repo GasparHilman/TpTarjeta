@@ -136,9 +136,10 @@ namespace TP_Tarjeta_tests
         }
 
         [Test]
-        public void PrimerUsoFrecuente_Boleto29()
+        public void PrimerUsoFrecuente_Boleto29y30()
         {
-            tarjeta.viajesmes = 28;
+            
+            tarjeta.setear_viajesmes( 28);
             tarjeta.Cargar_tarjeta(9000);
             k.PagarCon(tarjeta, tiempo); // boleto 29
             Assert.That(tarjeta.saldo, Is.EqualTo(9000 - k.precio));
@@ -148,7 +149,7 @@ namespace TP_Tarjeta_tests
         [Test]
         public void SegundoUsoFrecuente_Boleto30()
         {
-            tarjeta.viajesmes = 29;
+            tarjeta.setear_viajesmes( 29);
             tarjeta.Cargar_tarjeta(9000);
             k.PagarCon(tarjeta, tiempo); // boleto 30
             Assert.That(tarjeta.saldo, Is.EqualTo(9000 - ((int)(k.precio * 0.8))));
@@ -158,7 +159,7 @@ namespace TP_Tarjeta_tests
         [Test]
         public void DescuentoEnViaje80()
         {
-            tarjeta.viajesmes = 79;
+            tarjeta.setear_viajesmes( 79);
             tarjeta.Cargar_tarjeta(9000);
             k.PagarCon(tarjeta, tiempo); // boleto 80
             Assert.That(tarjeta.saldo, Is.EqualTo(9000 - ((int)(k.precio * 0.75))));
@@ -167,7 +168,7 @@ namespace TP_Tarjeta_tests
         [Test]
         public void SinDescuentoEnViaje81()
         {
-            tarjeta.viajesmes = 80;
+            tarjeta.setear_viajesmes( 80);
             tarjeta.Cargar_tarjeta(9000);
             k.PagarCon(tarjeta, tiempo); // boleto 81
             Assert.That(tarjeta.saldo, Is.EqualTo(9000 - k.precio ));
