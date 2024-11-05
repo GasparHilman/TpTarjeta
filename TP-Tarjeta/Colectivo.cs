@@ -25,7 +25,7 @@ namespace Space
             {   
                 tarifa = precio;
                 flag_viajeshoy=false;
-                if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22)
+                if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22 && tiempo.Now().DayOfWeek != DayOfWeek.Sunday && tiempo.Now().DayOfWeek != DayOfWeek.Saturday)
                 {   flag_viajeshoy=true;
                     if (tarjeta.historial.Count != 0)
                     {
