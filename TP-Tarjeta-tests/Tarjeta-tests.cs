@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TP_Tarjeta_tests
 {
-    internal class Iteracion1_tests
+    internal class Tarjeta_tests
     {
         public TiempoFalso tiempo;
         public Colectivo k;
@@ -19,7 +19,7 @@ namespace TP_Tarjeta_tests
             tiempo = new TiempoFalso();
             tarjeta = new Tarjeta(1);
             k = new Colectivo("K");
-   
+
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace TP_Tarjeta_tests
             tarjeta.Cargar_tarjeta(2000);
             Assert.That(tarjeta.saldo, Is.EqualTo(2000));
             tarjeta.restar_saldo(2000);
-            
+
             tarjeta.Cargar_tarjeta(3000);
             Assert.That(tarjeta.saldo, Is.EqualTo(3000));
             tarjeta.restar_saldo(3000);
@@ -71,3 +71,4 @@ namespace TP_Tarjeta_tests
         }
     }
 }
+

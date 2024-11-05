@@ -21,12 +21,21 @@ namespace Space
 
         public bool Descontar(Tarjeta tarjeta, Tiempo tiempo)
         {
-            if (tarjeta is GratuitoBoleto)
-            {   
+            if (tarjeta is JubiladoBoleto) {
                 tarifa = precio;
-                flag_viajeshoy=false;
                 if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22 && tiempo.Now().DayOfWeek != DayOfWeek.Sunday && tiempo.Now().DayOfWeek != DayOfWeek.Saturday)
-                {   flag_viajeshoy=true;
+                {
+                    tarifa = 0;
+                    TipoTarjeta = "Boleto Jubilado";
+                }
+
+            } else { 
+            if (tarjeta is GratuitoBoleto)
+            {
+                tarifa = precio;
+                flag_viajeshoy = false;
+                if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22 && tiempo.Now().DayOfWeek != DayOfWeek.Sunday && tiempo.Now().DayOfWeek != DayOfWeek.Saturday)
+                { flag_viajeshoy = true;
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.DayOfYear != tiempo.Now().DayOfYear)
@@ -46,19 +55,19 @@ namespace Space
                         tarifa = precio;
                     }
 
-                    TipoTarjeta = "Boleto Gratuito"; 
+                    TipoTarjeta = "Boleto Gratuito";
 
                 }
             }
             else
             {
-               if (tarjeta is MedioBoleto)
-                {   
+                if (tarjeta is MedioBoleto)
+                {
                     tarifa = precio;
-                    flag_viajeshoy=false;
+                    flag_viajeshoy = false;
                     if (tiempo.Now().Hour >= 6 && tiempo.Now().Hour <= 22 && tiempo.Now().DayOfWeek != DayOfWeek.Sunday && tiempo.Now().DayOfWeek != DayOfWeek.Saturday)
                     {
-                        flag_viajeshoy=true;
+                        flag_viajeshoy = true;
                         if (tarjeta.historial.Count != 0)
                         {
                             if (tarjeta.historial.LastOrDefault().UltimoViaje.DayOfYear != tiempo.Now().DayOfYear)
@@ -100,7 +109,7 @@ namespace Space
                 }
                 else
                 {
-                    
+
                     if (tarjeta.historial.Count != 0)
                     {
                         if (tarjeta.historial.LastOrDefault().UltimoViaje.Month != tiempo.Now().Month || tarjeta.historial.LastOrDefault().UltimoViaje.Year != tiempo.Now().Year)
@@ -114,7 +123,7 @@ namespace Space
                     {
                         tarifa = (int)(precio * 0.8);
                     }
-                    if (tarjeta.viajesmes ==79)
+                    if (tarjeta.viajesmes == 79)
                     {
                         tarifa = (int)(precio * 0.75);
                     }
@@ -123,7 +132,7 @@ namespace Space
                     TipoTarjeta = "Boleto Normal";
                 }
             }
-
+            }
             if (tarjeta.saldo - tarifa >= tarjeta.limite_neg)
             {
 
